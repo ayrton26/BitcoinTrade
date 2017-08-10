@@ -1,0 +1,1 @@
+select id, nome, email from bitcointrade.tb_clientes

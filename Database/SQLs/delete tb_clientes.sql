@@ -1,0 +1,1 @@
+delete from bitcointrade.tb_clientes where id=3
