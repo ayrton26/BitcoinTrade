@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -19,8 +20,11 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -31,6 +35,7 @@ import br.com.ayrton.bitcointrade.model.TipoCliente;
 import br.com.ayrton.bitcointrade.persistence.BitcoinTradeContract;
 import br.com.ayrton.bitcointrade.persistence.BitcoinTradeDbHelper;
 import br.com.ayrton.bitcointrade.persistence.adapters.ClienteDBAdapter;
+import br.com.ayrton.bitcointrade.view.ClientListViewAdapter;
 import br.com.ayrton.bitcointrade.view.FormularioClienteActivity;
 
 public class MainActivity extends AppCompatActivity
@@ -74,7 +79,7 @@ public class MainActivity extends AppCompatActivity
     protected void onResume(){
         super.onResume();
 
-        clientListView.setAdapter(new ClienteArrayAdapter(getApplicationContext(), R.layout.simple_list_item));
+        clientListView.setAdapter(new ClientListViewAdapter(getApplicationContext(), clienteDBAdapter));
     }
 
     @Override
@@ -149,36 +154,4 @@ public class MainActivity extends AppCompatActivity
         return true;
     }
 
-
-    private class ClienteArrayAdapter extends ArrayAdapter<String> {
-
-        HashMap<String, Integer> mIdMap = new HashMap<String, Integer>();
-
-        List<Cliente> clientes = new ArrayList<>();
-
-        public ClienteArrayAdapter(Context context, int textViewResourceId) {
-            super(context, textViewResourceId);
-
-            ArrayList<String> nomes = new ArrayList<>();
-            clientes.clear();
-            clientes.addAll(clienteDBAdapter.list());
-            for (int i = 0; i < clientes.size(); ++i) {
-                mIdMap.put(clientes.get(i).getNome(), i);
-                nomes.add(clientes.get(i).getNome());
-            }
-            addAll(nomes);
-        }
-
-        @Override
-        public long getItemId(int position) {
-            String item = getItem(position);
-            return mIdMap.get(item);
-        }
-
-        @Override
-        public boolean hasStableIds() {
-            return true;
-        }
-
-    }
 }
