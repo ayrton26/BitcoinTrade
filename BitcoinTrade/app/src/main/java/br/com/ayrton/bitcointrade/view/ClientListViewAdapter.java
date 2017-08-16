@@ -47,6 +47,10 @@ public class ClientListViewAdapter extends ArrayAdapter<String> {
             return mIdMap.get(item);
         }
 
+        public Cliente getCliente(int position){
+            return clientes.get(position);
+        }
+
         @Override
         public boolean hasStableIds() {
             return true;

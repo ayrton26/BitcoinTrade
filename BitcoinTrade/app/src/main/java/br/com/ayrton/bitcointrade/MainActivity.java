@@ -21,10 +21,12 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -43,6 +45,7 @@ public class MainActivity extends AppCompatActivity
     private ClienteDBAdapter clienteDBAdapter;
     private Activity myself;
     private ListView clientListView;
+    private ClientListViewAdapter clientListViewAdapter;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -74,12 +77,24 @@ public class MainActivity extends AppCompatActivity
 
         clientListView = (ListView) findViewById(R.id.clienteListView);
 
+        clientListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view,
+                                    int position, long id) {
+                Cliente cliente = clientListViewAdapter.getCliente(position);
+
+                Intent intent = new Intent(myself, FormularioClienteActivity.class);
+                intent.putExtra("Cliente", cliente);
+                startActivity(intent);
+            }
+        });
+
     }
     @Override
     protected void onResume(){
         super.onResume();
-
-        clientListView.setAdapter(new ClientListViewAdapter(getApplicationContext(), clienteDBAdapter));
+        this.clientListViewAdapter = new ClientListViewAdapter(getApplicationContext(), clienteDBAdapter);
+        clientListView.setAdapter(clientListViewAdapter);
     }
 
     @Override

@@ -1,10 +1,12 @@
 package br.com.ayrton.bitcointrade.model;
 
+import java.io.Serializable;
+
 /**
  * Created by ayrton on 28/07/2017.
  */
 
-public class Cliente {
+public class Cliente implements Serializable {
     private int id;
     private String nome;
     private String email;
@@ -37,6 +39,10 @@ public class Cliente {
 
     public String getEmail() {
         return email;
+    }
+
+    public void setId(int id){
+        this.id = id;
     }
 
     public void setEmail(String email) {
