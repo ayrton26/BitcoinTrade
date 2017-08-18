@@ -3,12 +3,14 @@ package br.com.ayrton.bitcointrade;
 import android.app.Activity;
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -46,6 +48,7 @@ public class MainActivity extends AppCompatActivity
     private Activity myself;
     private ListView clientListView;
     private ClientListViewAdapter clientListViewAdapter;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -77,6 +80,7 @@ public class MainActivity extends AppCompatActivity
 
         clientListView = (ListView) findViewById(R.id.clienteListView);
 
+
         clientListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view,
@@ -88,13 +92,42 @@ public class MainActivity extends AppCompatActivity
                 startActivity(intent);
             }
         });
+        clientListView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> parent, View view, final int position, long id) {
+
+                AlertDialog.Builder builder = new AlertDialog.Builder(myself, R.style.Theme_AppCompat_Dialog);
+                builder.setMessage("")
+                        .setTitle("Apagar Cliente?")
+                        .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                clienteDBAdapter.delete(clientListViewAdapter.getCliente(position));
+                                refresh();
+                            }
+                        })
+                        .setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                            }
+                        })
+                        .create()
+                        .show();
+
+
+                return true;
+            }
+        });
 
     }
-    @Override
-    protected void onResume(){
-        super.onResume();
-        this.clientListViewAdapter = new ClientListViewAdapter(getApplicationContext(), clienteDBAdapter);
+
+    private void refresh() {
+        clientListViewAdapter = new ClientListViewAdapter(getApplicationContext(), clienteDBAdapter);
         clientListView.setAdapter(clientListViewAdapter);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        refresh();
     }
 
     @Override
@@ -140,21 +173,21 @@ public class MainActivity extends AppCompatActivity
             clienteDBAdapter.insert(cliente);
         } else if (id == R.id.nav_gallery) {
             List<Cliente> list = clienteDBAdapter.list();
-            for (Cliente c : list){
+            for (Cliente c : list) {
                 Log.d("MainActivity",
                         "ID: " + c.getId() +
-                        " Nome: " + c.getNome() +
-                        " Email: " + c.getEmail() +
-                        " Telefone: " + c.getTelefone() +
-                        " Tipo: " + c.getTipo());
+                                " Nome: " + c.getNome() +
+                                " Email: " + c.getEmail() +
+                                " Telefone: " + c.getTelefone() +
+                                " Tipo: " + c.getTipo());
             }
 
         } else if (id == R.id.nav_slideshow) {
-            Cliente cliente = new Cliente(5,"Catapobio", "cata@gmail", "8799319990", TipoCliente.PREMIUM);
+            Cliente cliente = new Cliente(5, "Catapobio", "cata@gmail", "8799319990", TipoCliente.PREMIUM);
             clienteDBAdapter.delete(cliente);
 
         } else if (id == R.id.nav_manage) {
-            Cliente cliente = new Cliente(5,"Catapobio", "cata@gmail", "8799319990", TipoCliente.PREMIUM);
+            Cliente cliente = new Cliente(5, "Catapobio", "cata@gmail", "8799319990", TipoCliente.PREMIUM);
             cliente.setNome("Jose");
             clienteDBAdapter.update(cliente);
 
