@@ -22,6 +22,14 @@
         <activity
             android:name=".view.FormularioClienteActivity"
             android:label="@string/title_activity_formulario_cliente"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".view.ListaCarteiraActivity"
+            android:label="@string/title_activity_lista_carteira"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".view.FormularioCarteiraActivity"
+            android:label="@string/title_activity_formulario_carteira"
             android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 

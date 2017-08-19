@@ -6,4 +6,6 @@
 
     <string name="action_settings">Settings</string>
     <string name="title_activity_formulario_cliente">FormularioClienteActivity</string>
+    <string name="title_activity_lista_carteira">ListaCarteiraActivity</string>
+    <string name="title_activity_formulario_carteira">FormularioCarteiraActivity</string>
 </resources>

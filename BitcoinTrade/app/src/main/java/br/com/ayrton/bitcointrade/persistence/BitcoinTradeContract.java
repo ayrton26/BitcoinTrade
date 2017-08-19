@@ -5,6 +5,8 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.provider.BaseColumns;
 
+import br.com.ayrton.bitcointrade.model.Carteira;
+
 /**
  * Created by ayrton on 28/07/2017.
  */
@@ -38,5 +40,30 @@ public class BitcoinTradeContract {
     static final String SQL_DROP_CLIENTES =
             "DROP TABLE IF EXISTS" + Clientes.TABLE_NAME;
 
+
+    public static class Carteiras implements BaseColumns{
+        public static final String TABLE_NAME = "carteiras";
+        public static final String COLLUMN_NAME_DESCRICAO = "descricao";
+        public static final String COLLUMN_NAME_SALDO = "saldo";
+        public static final String COLLUMN_NAME_CLIENTE_ID = "cliente_id";
+    }
+
+    public static String[] carteiraProjection = {
+            Carteiras._ID,
+            Carteiras.COLLUMN_NAME_DESCRICAO,
+            Carteiras.COLLUMN_NAME_SALDO,
+            Carteiras.COLLUMN_NAME_CLIENTE_ID
+    };
+
+    static final String SQL_CREATE_CARTEIRAS =
+            "CREATE TABLE " + Carteiras.TABLE_NAME + " (" +
+                    Carteiras._ID + " INTEGER PRIMARY KEY," +
+                    Carteiras.COLLUMN_NAME_DESCRICAO + " TEXT," +
+                    Carteiras.COLLUMN_NAME_SALDO + " ," +
+                    "FOREIGN KEY(" + Carteiras.COLLUMN_NAME_CLIENTE_ID + ") REFERENCES " +
+                    Clientes.TABLE_NAME + "(" + Clientes._ID + "))";
+
+    static final String SQL_DROP_CARTEIRAS =
+            "DROP TABLE IF EXISTS" + Carteiras.TABLE_NAME;
 
 }
