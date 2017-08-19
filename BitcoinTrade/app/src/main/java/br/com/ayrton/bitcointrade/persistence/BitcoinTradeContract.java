@@ -59,7 +59,7 @@ public class BitcoinTradeContract {
             "CREATE TABLE " + Carteiras.TABLE_NAME + " (" +
                     Carteiras._ID + " INTEGER PRIMARY KEY," +
                     Carteiras.COLLUMN_NAME_DESCRICAO + " TEXT," +
-                    Carteiras.COLLUMN_NAME_SALDO + " ," +
+                    Carteiras.COLLUMN_NAME_SALDO + " REAL," +
                     "FOREIGN KEY(" + Carteiras.COLLUMN_NAME_CLIENTE_ID + ") REFERENCES " +
                     Clientes.TABLE_NAME + "(" + Clientes._ID + "))";
 
