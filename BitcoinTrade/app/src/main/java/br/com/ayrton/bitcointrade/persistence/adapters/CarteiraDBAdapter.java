@@ -53,13 +53,8 @@ public class CarteiraDBAdapter {
 
     public List<Carteira> list(){
         List<Carteira> list = new ArrayList<>();
-        Cursor c = db.query(
-                BitcoinTradeContract.Carteiras.TABLE_NAME,
-                BitcoinTradeContract.carteiraProjection,
-                null,
-                null,
-                null,
-                null,
+        Cursor c = db.rawQuery(
+                BitcoinTradeContract.SQL_JOIN_CARTEIRAS_CLIENTES,
                 null
         );
 
@@ -67,13 +62,57 @@ public class CarteiraDBAdapter {
         int descricaoIndex = c.getColumnIndex(BitcoinTradeContract.Carteiras.COLLUMN_NAME_DESCRICAO);
         int saldoIndex = c.getColumnIndex(BitcoinTradeContract.Carteiras.COLLUMN_NAME_SALDO);
         int clienteIdIndex = c.getColumnIndex(BitcoinTradeContract.Carteiras.COLLUMN_NAME_CLIENTE_ID);
+        int clienteNomeIndex = c.getColumnIndex(BitcoinTradeContract.Clientes.COLLUMN_NAME_NOME);
+        int clienteEmailIndex = c.getColumnIndex(BitcoinTradeContract.Clientes.COLLUMN_NAME_EMAIL);
+        int clienteTelefoneIndex = c.getColumnIndex(BitcoinTradeContract.Clientes.COLLUMN_NAME_TELEFONE);
+        int clienteTipoIndex = c.getColumnIndex(BitcoinTradeContract.Clientes.COLLUMN_NAME_TIPO);
 
         while (c.moveToNext()){
+            Cliente cliente = new Cliente(
+                    c.getInt(clienteIdIndex),
+                    c.getString(clienteNomeIndex),
+                    c.getString(clienteEmailIndex),
+                    c.getString(clienteTelefoneIndex),
+                    TipoCliente.mapping(c.getInt(clienteTipoIndex))
+            );
             Carteira carteira = new Carteira(
                     c.getInt(idIndex),
                     c.getString(descricaoIndex),
                     c.getDouble(saldoIndex),
-                    new Cliente(c.getInt(clienteIdIndex), null, null, null, null)
+                    cliente
+            );
+            list.add(carteira);
+
+        }
+        c.close();
+        return list;
+    }
+
+    public List<Carteira> list(Cliente cliente){
+        List<Carteira> list = new ArrayList<>();
+        String[] args = {cliente.getId() + ""};
+        Cursor c = db.query(
+                BitcoinTradeContract.Carteiras.TABLE_NAME,
+                BitcoinTradeContract.carteiraProjection,
+                BitcoinTradeContract.Carteiras.COLLUMN_NAME_CLIENTE_ID + " = ?",
+                args,
+                null,
+                null,
+                null
+
+        );
+
+        int idIndex = c.getColumnIndex(BitcoinTradeContract.Carteiras._ID);
+        int descricaoIndex = c.getColumnIndex(BitcoinTradeContract.Carteiras.COLLUMN_NAME_DESCRICAO);
+        int saldoIndex = c.getColumnIndex(BitcoinTradeContract.Carteiras.COLLUMN_NAME_SALDO);
+
+        while (c.moveToNext()){
+
+            Carteira carteira = new Carteira(
+                    c.getInt(idIndex),
+                    c.getString(descricaoIndex),
+                    c.getDouble(saldoIndex),
+                    cliente
             );
             list.add(carteira);
 

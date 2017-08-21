@@ -22,8 +22,8 @@ public class BitcoinTradeDbHelper extends SQLiteOpenHelper {
     }
 
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion){
-        db.execSQL(BitcoinTradeContract.SQL_DROP_CLIENTES);
         db.execSQL(BitcoinTradeContract.SQL_DROP_CARTEIRAS);
+        db.execSQL(BitcoinTradeContract.SQL_DROP_CLIENTES);
         onCreate(db);
     }
 

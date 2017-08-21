@@ -66,4 +66,9 @@ public class BitcoinTradeContract {
     static final String SQL_DROP_CARTEIRAS =
             "DROP TABLE IF EXISTS" + Carteiras.TABLE_NAME;
 
+    public static final String SQL_JOIN_CARTEIRAS_CLIENTES =
+            "SELECT * FROM " + Carteiras.TABLE_NAME +
+                    " INNER JOIN " + Clientes.TABLE_NAME +
+                    " ON " + Carteiras.COLLUMN_NAME_CLIENTE_ID +
+                    " = " + Clientes._ID;
 }

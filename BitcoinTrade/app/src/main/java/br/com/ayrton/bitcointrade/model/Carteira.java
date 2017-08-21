@@ -17,6 +17,10 @@ public class Carteira {
         this.cliente = cliente;
     }
 
+    public Carteira(int id, String descricao, Cliente cliente) {
+        this(id, descricao, 0, cliente);
+    }
+
     public int getId() {
         return id;
     }
